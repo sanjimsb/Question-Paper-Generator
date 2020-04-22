@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question Set</title>
+</head>
+{% load static %}
+<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+<script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'style_this_page.css' %}">
+<style type="text/css">
+	.no-gutter-small{
+padding: 0 5px 10px 0!important;
+}
+</style>
+<body>
+<section>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" href="#">Question Paper Generator</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.authenticate %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Logout</a></li>
+				{% else %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Sign Up</a></li>
+					<li><a href="#"><i class="fa fa-login"></i> Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>	
+</section>
+
+<section class="add-question-form">
+	<div class="container">
+		<div class="row touch-up-form">
+			<div class="col-md-4 left-navigation">
+				<h3>Select Options</h3>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="{% url 'add_question_main' %}">Add question paper</a></li>
+					<li><a href="{% url 'generate_question_paper' %}">Generate question paper</a></li>
+					<li class="active"><a href="#Generate_question_paper_specific" data-toggle="tab">Generate Specific questions</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8">
+					<div class="tab-content">
+						<div id="Generate_question_paper_specific" class="tab-pane fade in active">
+							<div class="row">
+								<div class="col-md-8">
+								
+									<form method="POST">
+										{% csrf_token %}
+										<div class="form-group">
+											<label>Institute Name</label>
+											<input class="form-control" name="iname" id="iname" placeholder="Institute Name">
+										</div>
+										<div class="form-group">
+											<label>Choose term</label>
+											<select name="term" id="term" class="form-control">
+												<option>First Terminal Examinations</option>
+												<option>Second Terminal Examinations</option>
+												<option>Third Terminal Examinations</option>
+												<option>Final Terminal Examinations</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Class</label>
+												<select name="class" id="class" class="form-control">
+													<option>1</option>
+													<option>2</option>
+													<option>3</option>
+													<option>4</option>
+													<option>5</option>
+													<option>6</option>
+													<option>7</option>
+													<option>8</option>
+													<option>9</option>
+													<option>10</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Exam Time</label>
+												<select name="time" id="time" class="form-control">
+													<option>1.30 hrs</option>
+													<option>2 hrs</option>
+													<option>2.30 hrs</option>
+													<option>3 hrs</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label>Subject</label>
+											<input class="form-control" name="subject" id="subject" placeholder="Subject">
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group A questions</label>
+												<input class="form-control" name="g_q_a" id="g_q_a">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group A compulsory questions</label>
+												<input class="form-control" name="g_a_cq" id="g_a_cq">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group B questions</label>
+												<input class="form-control" name="g_q_b" id="g_q_b">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group B compulsory questions</label>
+												<input class="form-control" name="g_b_cq" id="g_b_cq">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group C questions</label>
+												<input class="form-control" name="g_q_c" id="g_q_c">
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-6 no-gutter-small">
+												<label>Group C compulsory questions</label>
+												<input class="form-control" name="g_c_cq" id="g_c_cq">
+											</div>
+										</div>
+										<div class="form-group">
+											<button class="btn btn-primary" id="csb" name="csb">Choose Questions</button>
+										</div>
+										
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+</body>
+
+<script>
+    $("#csb").click(function () {
+     var subject = $("#subject").val();
+     var g_a_q = $("#ga_q").val();
+     var g_b_q = $("#ga_q_b").val();
+     var g_b_q = $("#ga_q_b").val();
+     $.session.set("subs", "subject");
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+       });
+
+       $.ajax({
+        url: '{% url 'qp_choice_generate' %}',
+        type: 'POST',
+        data: {
+          'sub': subject,
+          'groupa': g_a_q,
+          'groupb': g_b_q,
+          'groupc': g_c_q
+        },
+        dataType: "json",
+        success: function (data) {
+          if (data) {
+            console.log(data);
+          }
+        }
+      });
+    });
+
+  </script>
+
+
+</html>
+
+<!--  var limit = 5;
+$('input.single-checkbox').on('change', function(evt) {
+   if($(this).siblings(':checked').length >= limit) {
+       this.checked = false;
+   }
+});
+ <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 5<br> -->

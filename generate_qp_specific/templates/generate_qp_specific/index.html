@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question Set</title>
+</head>
+{% load static %}
+<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+<script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<style type="text/css">
+	.question_list{
+		height: 200px;
+		overflow: scroll;
+		box-shadow: 0 0 0.1px rgb(0,0,.1);
+		padding: 10px;
+	}
+</style>
+<body>
+{% load crispy_forms_tags %}
+
+<section>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" href="#">Question Paper Generator</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.authenticate %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Logout</a></li>
+				{% else %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Sign Up</a></li>
+					<li><a href="#"><i class="fa fa-login"></i> Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>	
+</section>
+
+<section class="add-question-form">
+	<div class="container">
+		<div class="row touch-up-form">
+			<div class="col-md-4 left-navigation">
+				<h3>Select Options</h3>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="{% url 'add_question_main' %}">Add question paper</a></li>
+					<li><a href="{% url 'generate_question_paper' %}">Generate question paper</a></li>
+					<li class="active"><a href="#Generate_question_paper_specific" data-toggle="tab">Generate Specific questions</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8">
+					<div class="tab-content">
+						<div id="Generate_question_paper_specific" class="tab-pane fade in active">
+							<div class="row">
+								<div class="col-md-8">
+									<!-- <form>
+										<h3>Generate Question Paper</h3>
+										<div class="form-group">
+											<label for='institute_name'>Institute Name</label>
+											<input type="text" name="institute_name" id="institute_name" placeholder="Institute Name" class="form-control">
+										</div>
+										<div class="form-group">
+											<label for='for_subject'>Subject</label>
+											<input type="text" name="for_subject" id="for_subject" placeholder="Enter Subject" class="form-control">
+										</div>
+										<div class="form-group">
+											<label for='group-a'>Group:A Questions</label>
+											<select name="group-a" id="group-a" class="form-control">
+												<option>8</option>
+												<option>12</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for='group-a'>Group:A compulsory question</label>
+											<select name="group-a" id="group-a" class="form-control">
+												<option>5</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for='group-b'>Group:B Questions</label>
+											<select name="group-b" id="group-b" class="form-control">
+												<option>5</option>
+												<option>8</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for='group-c'>Group:C Questions</label>
+											<select name="group-c" id="group-c" class="form-control">
+												<option>2</option>
+												<option>4</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for=''></label>
+											<select name="marks" id="marks" class="form-control">
+												<option>5</option>
+												<option>2</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label for='question-type'>Question type</label>
+											<select name="question-type" id="question-type" class="form-control">
+												<option>Very short question</option>
+												<option>Short question</option>
+												<option>Long question</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<p class="question_save_button"><button class="btn btn-primary" id="add" name="add"
+												type="SUBMIT">Save</button></p>
+										</div>
+									</form> -->
+									<form method="POST">
+										{% csrf_token %}
+										<!-- {{ form|crispy }} -->
+
+										<div class="form-group">
+											<label>Group A questions (choose {{ limit_selection.groupa_selection_ques }} questions)</label>
+											<div class="question_list">
+												{% for i in group_a_ques %}
+												<input type="checkbox"  name="group_a{{ forloop.counter }}"" value="{{ i }}" class="single_checkbox">{{ i }}<br>
+												{% endfor %}
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Group B questions (choose {{ limit_selection.groupb_selection_ques }} questions)</label>
+											<div class="question_list">
+												{% for i in group_b_ques %}
+												<input type="checkbox"  name="group_b{{ forloop.counter }}" value="{{ i }}" class="single_checkbox">{{ i }}<br>
+												{% endfor %}
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Group C questions (choose {{ limit_selection.groupc_selection_ques }} questions)</label>
+											<div class="question_list">
+												{% for i in group_c_ques %}
+												<input type="checkbox"  name="group_c{{ forloop.counter }}" value="{{ i }}" class="single_checkbox">{{ i }}<br>
+												{% endfor %}
+											</div>
+										</div>
+										
+										
+										<div class="form-group">
+											<input type="SUBMIT" class="btn btn-primary" name="generate" id="generate" value="Generate">
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+</body>
+
+
+<!-- <script>
+$(document).ready(function(){
+	$("#ga_q").keyup(function(){
+		var aa = $("#ga_q").val();
+	
+
+	$('.single_checkbox').change(function(e){
+		if ($('.single_checkbox:checked').length > aa) {
+		$(this).prop('checked', false)
+		alert("allowed only " + aa + " ");
+	}
+	}); 
+
+	});
+});
+</script> -->
+
+
+</html>
+

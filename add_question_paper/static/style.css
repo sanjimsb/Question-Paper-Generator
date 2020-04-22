@@ -1,0 +1,86 @@
+ body h3{
+ 	font-family: Montserrat;
+ }
+ .question_save_button{
+ 	text-align: center;
+ }
+  .question_save_button button{
+  	padding: 6px 40px 6px 40px;
+  	border-radius: 0px;
+  }
+ .render-div button{
+   	padding: 6px 40px 6px 40px!important;
+  	border-radius: 0px!important;	
+  }
+ .tab-content textarea, input, select{
+ 	border-radius: 0px!important;
+ }   
+ .login-head{
+ 	font-family: Montserrat!important;
+ 	padding: 30px;
+ 	margin:0px!important;
+ 	background-color: #337ab7;
+ 	color:#fff;
+ 	font-weight: 500;
+ 	font-size:16px;
+ }
+ 
+.touch-up-form{
+box-shadow: 0 0 10px rgba(0,0,.1);
+padding: 30px 0 30px 0;
+}
+.add-question-form{
+	padding: 70px 0 70px 0!important;
+}
+.touch-up-form .nav-pills>li>a {
+    border-radius: 0px;
+}
+ .navbar-default{
+ 	margin-bottom: 0px!important;
+ 	background-color: #e8e8e8!important;
+ 	border:0px!important;
+ 	border-radius:0px!important;
+ }
+a.navbar-brand{
+ 	text-decoration: none!important;
+ }
+.prestine{
+	border-radius: 0px!important;
+}
+.asteriskField {
+    display: none;
+}
+#id_username, #id_password, #id_password1, #id_password2, #id_email{
+	border-radius: 0px!important;
+}
+.alert-danger{
+	border-radius: 0px!important;
+}
+.controls ul{
+	display: none;
+}
+.help-block{
+	color:green;
+}
+
+.login-button{
+	border-radius: 0px;
+	padding: 5px 30px 5px 30px;
+}
+.button-align p{
+	text-align: center!important;
+}
+.outer-shadow{
+	box-shadow: 0 0 10px rgba(0,0, 30);
+	
+}
+.signup-section{
+	padding: 60px 0 0 0 ;
+}
+.form-content{
+	padding: 10px 30px 10px 30px;
+}
+.fixing_margin_form_control{
+	margin-top: 15px;
+}
+

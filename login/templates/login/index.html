@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+</head>
+{% load static %}
+{% load crispy_forms_tags %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<link type="text/css" rel="stylesheet" href="{% static 'style.css' %}">
+<body>
+<section>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" href="#">Question Paper Generator</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="signup"><i class="fa fa-signup"></i> Sign Up</a></li>
+				<li><a href="#"><i class="fa fa-login"></i> Login</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>	
+</section>
+<section class="signup-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="outer-shadow">
+					<p class="login-head">Question Paper Generator Login</p>
+					<div class="form-content">
+						<form method="POST" action="">
+							{% csrf_token %}
+							{{ form|crispy }}
+							<div class="form-group button-align">
+								<p><button type="SUBMIT" id="login" name="login" class="btn btn-primary login-button">Login</button></p>
+							</div>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
+</section>
+<!-- <section>
+	<div class="container">
+		<div class="col-md-3"></div>
+		{% block content %}
+		<div class="col-md-6">
+			<form method="POST" action="">
+				{% csrf_token %}
+				{{ form|crispy }}
+				<div class="form-group">
+					<input type="SUBMIT" class="btn btn-primary" id="login" name="login" value="Login">
+				</div>
+				<div class="form-group">
+					<a href="signup">Sign up</a>
+				</div>
+			</form>
+		</div>
+		{% endblock content %}
+		<div class="col-md-3"></div>
+	</div>
+</section> -->
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question Set</title>
+</head>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'new.css' %}">
+<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+<script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<style type="text/css">
+	.help-block{
+		color:#d23935;
+	}
+	.border-red{
+		border-color:#d23935;
+	}
+</style>
+<body>
+<section>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" href="#">Question Paper Generator</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.authenticate %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Logout</a></li>
+				{% else %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Sign Up</a></li>
+					<li><a href="#"><i class="fa fa-login"></i> Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>	
+</section>
+
+<section class="add-question-form">
+	<div class="container">
+		<div class="row touch-up-form">
+			<div class="col-md-4 left-navigation">
+				<h3>Select Options</h3>
+				<ul class="nav nav-pills nav-stacked">
+					<li class="active"><a href="#add_question_paper" data-toggle="tab">Add question paper</a></li>
+					<li><a href="{% url 'generate_question_paper' %}">Generate question paper</a></li>
+					<li><a href="{% url 'choose_question' %}">Generate Specific questions</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8 right-content-form">
+					<div class="tab-content">
+						<div id="add_question_paper" class="tab-pane fade in active">
+							<div class="row"><h3>Add Question Paper</h3></div>
+							<div class="row">
+								<div class="col-md-8">
+										<div class="form-group">
+											{% if errors_int %}
+											<p class="help-block"> 
+											{% endif %}
+											<label>How many question you want to add</label>
+											{% if errors_int %}
+											<input type="text" name="tn" id="tn" class="form-control border-red">
+											{% else %}
+											<input type="text" name="tn" id="tn" class="form-control">
+											{% endif %}
+											{% if errors_int %}
+											</p>
+											{% endif %}
+											{% for i in errors_int %}
+											<p class="help-block"><strong>{{ i }}</strong></p>
+											{% endfor %}
+										</div>
+										<div class="form-group">
+											<input type="button" id="create_txt" class="btn btn-primary render_button" value="render">
+										</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-8">
+									<form method="POST">
+										{% csrf_token %}
+										<div class="form-group " id="render">
+
+										</div>
+										<div class="form-group">
+											{% if errors %}
+											<p class="help-block"> 
+											{% endif %}
+
+											<label>Add Subject</label>
+											{% if errors %}
+											<input type="text" name="subject" id="subject" placeholder="Enter Subject" class="form-control border-red">
+											{% else %}
+											<input type="text" name="subject" id="subject" placeholder="Enter Subject" class="form-control">
+											{% endif %}
+
+											{% if errors %}
+											</p>
+											{% endif %}
+											{% for i in errors %}
+											<p class="help-block"><strong>{{ i }}</strong></p>
+											{% endfor %}
+										</div>
+										<div class="form-group">
+											{% if errors_c %}
+											<p class="help-block"> 
+											{% endif %}
+											<label>Class</label>
+											{% if errors_c %}
+											<input type="text" name="level" id="level" placeholder="Enter Class" class="form-control border-red">
+											{% else %}
+											<input type="text" name="level" id="level" placeholder="Enter Class" value="{{ level }}" class="form-control">
+											{% endif %}
+											{% if errors_c %}
+											</p>
+											{% endif %}
+											{% for i in errors_c %}
+											<p class="help-block"><strong>{{ i }}</strong></p>
+											{% endfor %}
+
+										</div>
+										<div class="form-group">
+											<label>Assign Group</label>
+											<select name="group" id="group" class="form-control">
+												<option>Group A</option>
+												<option>Group B</option>
+												<option>Group C</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Question Weight</label>
+											<select name="question_weight" id="question_weight" class="form-control">
+												<option>5</option>
+												<option>2</option>
+												<option>10</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Question type</label>
+											<select name="question_type" id="question_type" class="form-control">
+												<option>Very short question</option>
+												<option>Short question</option>
+												<option>Long question</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<p class="question_save_button"><button class="btn btn-primary " id="add" name="add">Save</button></p>
+										</div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+</body>
+<script>
+$( "#create_txt" ).on( "click", function(){
+	
+		var num = $('#tn').val();
+	// $.get( "{% url 'add_question_main' %}", {'num':num});
+		$(".fixing_margin_form_control").remove();
+		$("textarea").remove();
+		$.ajax({
+	    url : '{% url 'add_question_main' %}',
+	    type : 'GET',
+	    dataType: 'json',
+	    data : {
+	      num : num
+	    },
+	    'success' : function(data) {
+	      if (data == "success") {
+	        alert('request sent!');
+	      }
+    		}
+ 		 });
+		window.history.pushState(null, null, '{% url 'add_question_main' %}'+"?num=" + num + "");
+ 
+		for(i = 1; i <= num; i++){
+		var $label = $("<label>Add question"+i+"</label>").addClass("fixing_margin_form_control");
+		var $div = $("<textarea>", { "class": "form-control","rows":"4","name":"textarea"+i+""});                
+		$("#render").append($label);
+		$("#render").append($div);  } 
+});
+</script>
+
+
+</html>
+
+ 

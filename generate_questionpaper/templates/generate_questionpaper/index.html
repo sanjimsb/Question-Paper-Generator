@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Question Set</title>
+</head>
+{% load static %}
+<script type="text/javascript" src="{% static 'jquery-3.3.1.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+<script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<body>
+{% load crispy_forms_tags %}
+<section>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>                        
+			</button>
+			<a class="navbar-brand" href="#">Question Paper Generator</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav navbar-right">
+				{% if user.authenticate %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Logout</a></li>
+				{% else %}
+					<li><a href="signup"><i class="fa fa-signup"></i>Sign Up</a></li>
+					<li><a href="#"><i class="fa fa-login"></i> Login</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>	
+</section>
+
+<section class="add-question-form">
+	<div class="container">
+		<div class="row touch-up-form">
+			<div class="col-md-4 left-navigation">
+				<h3>Select Options</h3>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="{% url 'add_question_main' %}">Add question paper</a></li>
+					<li class="active"><a href="#Generate_question_paper" data-toggle="tab">Generate question paper</a></li>
+					<li><a href="{% url 'choose_question' %}">Generate Specific questions</a></li>
+				</ul>
+			</div>
+			<div class="col-md-8">
+					<div class="tab-content">
+						<div id="Generate_question_paper" class="tab-pane fade in active">
+							<div class="row">
+								<div class="col-md-8">
+									<form method="POST">
+										{% csrf_token %}
+										{{ form|crispy }}
+										<div class="form-group button-align">
+											<input type="SUBMIT" class="btn btn-primary" name="generate" id="generate" value="Generate">
+										</div>
+										<div class="form-group button-align">
+											<input type="SUBMIT" class="btn btn-primary" name="mail" id="mail" value="Send Mail">
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+</body>
+
+
+
+</html>
+
+ 
